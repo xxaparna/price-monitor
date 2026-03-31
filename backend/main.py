@@ -3,13 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from backend.database import init_db
 from backend.config import get_settings
+from backend.api.routes import products, analytics, refresh, notifications
 
 settings = get_settings()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Runs on startup — creates tables and seeds admin key."""
     print("[Startup] Initializing database...")
     await init_db()
     print("[Startup] Database ready.")
@@ -32,8 +32,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Register all route groups
+app.include_router(products.router)
+app.include_router(analytics.router)
+app.include_router(refresh.router)
+app.include_router(notifications.router)
 
-@app.get("/health")
+
+@app.get("/health", tags=["Health"])
 async def health_check():
     return {
         "status": "ok",
