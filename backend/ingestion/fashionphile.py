@@ -10,7 +10,7 @@ class FashionphileCollector(BaseCollector):
         images = raw.get("main_images", [])
         image_url = images[0]["url"] if images else raw.get("image_url")
 
-        # Extract size dimensions if present
+        
         size_dim = metadata.get("size_dimensions", {}) or {}
         description = metadata.get("description") or None
 

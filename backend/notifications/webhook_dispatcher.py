@@ -10,14 +10,9 @@ settings = get_settings()
 
 
 async def dispatch_pending_events() -> None:
-    """
-    Runs as a background task after every refresh.
-    Finds all undelivered price events and POSTs them to
-    every active webhook. Retries up to max_retries times
-    with exponential backoff. Marks as dead_letter if all fail.
-    """
+    
     async with AsyncSessionLocal() as session:
-        # Get undelivered events that haven't exceeded retry limit
+       
         events_result = await session.execute(
             select(PriceEvent).where(
                 PriceEvent.is_delivered == False,
@@ -30,7 +25,7 @@ async def dispatch_pending_events() -> None:
         if not events:
             return
 
-        # Get all active webhook URLs
+        
         webhooks_result = await session.execute(
             select(WebhookSubscription).where(WebhookSubscription.is_active == True)
         )
@@ -67,7 +62,7 @@ async def dispatch_pending_events() -> None:
                         print(f"[Dispatcher] Attempt {attempt} failed: {e}")
                         await asyncio.sleep(settings.webhook_retry_delay ** attempt)
 
-                # Update event status
+                
                 await session.execute(
                     update(PriceEvent)
                     .where(PriceEvent.id == event.id)

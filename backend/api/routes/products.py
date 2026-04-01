@@ -41,14 +41,14 @@ async def list_products(
     if is_sold is not None:
         stmt = stmt.where(Product.is_sold == is_sold)
 
-    # Sorting
+    
     sort_col = getattr(Product, sort_by, Product.updated_at)
     if order == "asc":
         stmt = stmt.order_by(sort_col.asc())
     else:
         stmt = stmt.order_by(sort_col.desc())
 
-    # Pagination
+   
     offset = (page - 1) * page_size
     stmt = stmt.offset(offset).limit(page_size)
 
@@ -74,6 +74,6 @@ async def get_product(
     if not product:
         raise HTTPException(status_code=404, detail="Product not found.")
 
-    # Sort history by recorded_at ascending for chart display
+    
     product.price_history.sort(key=lambda h: h.recorded_at)
     return product

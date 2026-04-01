@@ -14,17 +14,13 @@ from datetime import datetime
 
 
 class BaseCollector(ABC):
-    """
-    Abstract base class for all marketplace collectors.
-    Each marketplace (Grailed, Fashionphile, 1stdibs) extends this.
-    Adding a new source = create a new file + extend this class. That's it.
-    """
+    
 
     source_name: str = ""
     data_folder: str = "sample_products"
 
     def get_files(self) -> list[str]:
-        """Find all JSON files for this source in the sample_products folder."""
+        
         pattern = os.path.join(self.data_folder, f"{self.source_name}_*.json")
         files = glob.glob(pattern)
         return files
@@ -36,24 +32,17 @@ class BaseCollector(ABC):
         reraise=True,
     )
     async def load_file(self, filepath: str) -> dict[str, Any]:
-        """Load a single JSON file with retry logic."""
-        await asyncio.sleep(0)   # keeps it async-compatible
+        
+        await asyncio.sleep(0)   
         with open(filepath, "r", encoding="utf-8") as f:
             return json.load(f)
 
     @abstractmethod
     def normalize(self, raw: dict[str, Any]) -> dict[str, Any]:
-        """
-        Each subclass must implement this.
-        Takes raw marketplace JSON, returns a clean normalized dict.
-        """
         pass
 
     async def collect(self) -> dict[str, int]:
-        """
-        Main entry point. Loads all files, normalizes, upserts into DB.
-        Returns a summary dict with counts.
-        """
+        
         files = self.get_files()
         if not files:
             print(f"[{self.source_name}] No files found.")
@@ -77,11 +66,7 @@ class BaseCollector(ABC):
         return results
 
     async def upsert_product(self, session: AsyncSession, data: dict[str, Any]) -> str:
-        """
-        Insert new product or update existing one.
-        If price changed, records history and creates a price event for notifications.
-        Returns 'new' or 'updated'.
-        """
+        
         stmt = select(Product).where(
             Product.source == data["source"],
             Product.external_id == data["external_id"],
@@ -90,7 +75,7 @@ class BaseCollector(ABC):
         existing: Product | None = result.scalar_one_or_none()
 
         if existing is None:
-            # Brand new product
+            
             product = Product(
                 id=str(uuid.uuid4()),
                 **data,
@@ -98,7 +83,7 @@ class BaseCollector(ABC):
             session.add(product)
             await session.flush()
 
-            # Record initial price in history
+           
             history = PriceHistory(
                 id=str(uuid.uuid4()),
                 product_id=product.id,
@@ -115,12 +100,12 @@ class BaseCollector(ABC):
             old_price = existing.current_price
             new_price = data.get("current_price")
 
-            # Update all fields
+            
             for key, value in data.items():
                 setattr(existing, key, value)
             existing.updated_at = datetime.utcnow()
 
-            # Only record history + event if price actually changed
+            
             if new_price is not None and old_price != new_price:
                 delta = round(new_price - (old_price or 0), 2)
 

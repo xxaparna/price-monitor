@@ -6,14 +6,14 @@ import uuid
 
 settings = get_settings()
 
-# Create async engine
+
 engine = create_async_engine(
     settings.database_url,
-    echo=False,          # set True temporarily if you want to see SQL queries
+    echo=False,          
     future=True,
 )
 
-# Session factory
+
 AsyncSessionLocal = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
@@ -22,11 +22,11 @@ AsyncSessionLocal = async_sessionmaker(
 
 
 async def init_db() -> None:
-    """Create all tables and seed the admin API key."""
+    
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    # Seed default admin key so the API works immediately on first run
+    
     async with AsyncSessionLocal() as session:
         result = await session.execute(
             text("SELECT id FROM api_keys WHERE owner = 'admin' LIMIT 1")
@@ -48,7 +48,7 @@ async def init_db() -> None:
 
 
 async def get_db() -> AsyncSession:
-    """FastAPI dependency — yields a DB session per request."""
+    
     async with AsyncSessionLocal() as session:
         try:
             yield session

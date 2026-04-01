@@ -4,8 +4,6 @@ from backend.ingestion.fashionphile import FashionphileCollector
 from backend.ingestion.firstdibs import FirstDibsCollector
 
 
-# ── Grailed normalize tests ──────────────────────────────────────
-
 def test_grailed_normalize_basic():
     raw = {
         "product_id": "abc-123",
@@ -64,7 +62,7 @@ def test_grailed_normalize_uses_first_image():
     assert result["image_url"] == "https://first-image.jpg"
 
 
-# ── Fashionphile normalize tests ─────────────────────────────────
+
 
 def test_fashionphile_normalize_basic():
     raw = {
@@ -109,7 +107,7 @@ def test_fashionphile_normalize_missing_price():
     assert result["current_price"] is None
 
 
-# ── 1stdibs normalize tests ──────────────────────────────────────
+
 
 def test_firstdibs_normalize_basic():
     raw = {

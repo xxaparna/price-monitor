@@ -10,7 +10,7 @@ class FirstDibsCollector(BaseCollector):
         images = raw.get("main_images", [])
         image_url = images[0]["url"] if images else raw.get("image_url")
 
-        # 1stdibs sometimes has all_prices dict — grab the main price
+        
         price = raw.get("price")
         if price is None:
             all_prices = metadata.get("all_prices", {}) or {}

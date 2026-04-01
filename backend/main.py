@@ -32,7 +32,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register all route groups
+
 app.include_router(products.router)
 app.include_router(analytics.router)
 app.include_router(refresh.router)

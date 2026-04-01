@@ -13,11 +13,7 @@ async def require_api_key(
     api_key: str = Depends(api_key_header),
     db: AsyncSession = Depends(get_db),
 ) -> ApiKey:
-    """
-    Every protected endpoint depends on this.
-    Checks the X-API-Key header, validates it exists and is active,
-    then increments usage count and updates last_used_at.
-    """
+   
     if not api_key:
         raise HTTPException(
             status_code=401,
@@ -38,7 +34,7 @@ async def require_api_key(
             detail="Invalid or inactive API key.",
         )
 
-    # Track usage per request
+    
     await db.execute(
         update(ApiKey)
         .where(ApiKey.id == key_obj.id)

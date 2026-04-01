@@ -4,7 +4,7 @@ from backend.notifications.webhook_dispatcher import dispatch_pending_events
 
 
 def test_price_delta_positive():
-    """Price increase should produce positive delta."""
+    
     old_price = 100.0
     new_price = 150.0
     delta = round(new_price - old_price, 2)
@@ -13,7 +13,7 @@ def test_price_delta_positive():
 
 
 def test_price_delta_negative():
-    """Price decrease should produce negative delta."""
+    
     old_price = 200.0
     new_price = 150.0
     delta = round(new_price - old_price, 2)
@@ -22,7 +22,7 @@ def test_price_delta_negative():
 
 
 def test_price_delta_zero():
-    """Same price should produce zero delta."""
+    
     old_price = 100.0
     new_price = 100.0
     delta = round(new_price - old_price, 2)
@@ -30,7 +30,7 @@ def test_price_delta_zero():
 
 
 def test_price_delta_precision():
-    """Delta should be rounded to 2 decimal places."""
+    
     old_price = 100.0
     new_price = 133.333333
     delta = round(new_price - old_price, 2)
@@ -39,7 +39,7 @@ def test_price_delta_precision():
 
 @pytest.mark.asyncio
 async def test_dispatch_no_events_runs_cleanly():
-    """Dispatcher should exit cleanly when there are no pending events."""
+    
     mock_session = AsyncMock()
     mock_result = MagicMock()
     mock_result.scalars.return_value.all.return_value = []

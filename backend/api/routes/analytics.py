@@ -14,11 +14,11 @@ async def get_analytics(
     db: AsyncSession = Depends(get_db),
     _: object = Depends(require_api_key),
 ):
-    # Total products
+    
     total_result = await db.execute(select(func.count(Product.id)))
     total_products = total_result.scalar() or 0
 
-    # Stats by source
+    
     source_result = await db.execute(
         select(
             Product.source,
@@ -39,7 +39,7 @@ async def get_analytics(
         for row in source_result.all()
     ]
 
-    # Stats by category
+    
     category_result = await db.execute(
         select(
             Product.category,

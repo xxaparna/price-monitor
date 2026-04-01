@@ -3,7 +3,7 @@ from typing import Optional
 from datetime import datetime
 
 
-# ── Product schemas ──────────────────────────────────────────────
+
 
 class PriceHistoryOut(BaseModel):
     id: str
@@ -40,7 +40,7 @@ class ProductDetailOut(ProductOut):
     price_history: list[PriceHistoryOut] = []
 
 
-# ── Analytics schemas ────────────────────────────────────────────
+
 
 class SourceStat(BaseModel):
     source: str
@@ -63,7 +63,7 @@ class AnalyticsOut(BaseModel):
     by_category: list[CategoryStat]
 
 
-# ── Refresh schemas ──────────────────────────────────────────────
+
 
 class RefreshOut(BaseModel):
     status: str
@@ -74,7 +74,7 @@ class RefreshOut(BaseModel):
     total_errors: int
 
 
-# ── Notification schemas ─────────────────────────────────────────
+
 
 class WebhookCreate(BaseModel):
     url: str
@@ -107,7 +107,7 @@ class PriceEventOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
-# ── API Key schemas ──────────────────────────────────────────────
+
 
 class ApiKeyCreate(BaseModel):
     owner: str

@@ -21,7 +21,7 @@ async def list_events(
     db: AsyncSession = Depends(get_db),
     _: object = Depends(require_api_key),
 ):
-    """Returns the price change event log."""
+    
     events = await get_recent_events(db, limit=limit, undelivered_only=undelivered_only)
     return events
 
@@ -32,7 +32,7 @@ async def register_webhook(
     db: AsyncSession = Depends(get_db),
     _: object = Depends(require_api_key),
 ):
-    """Register a webhook URL to receive price change notifications."""
+    
     webhook = WebhookSubscription(
         id=str(uuid.uuid4()),
         url=payload.url,
@@ -63,7 +63,7 @@ async def create_api_key(
     db: AsyncSession = Depends(get_db),
     _: object = Depends(require_api_key),
 ):
-    """Create a new API key for a consumer."""
+    
     from backend.models import ApiKey
     new_key = ApiKey(
         id=str(uuid.uuid4()),

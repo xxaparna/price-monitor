@@ -20,7 +20,7 @@ class Product(Base):
 
     id = Column(String, primary_key=True, default=generate_uuid)
     external_id = Column(String, nullable=False)
-    source = Column(String, nullable=False)        # grailed | fashionphile | 1stdibs
+    source = Column(String, nullable=False)        
     brand = Column(String, nullable=True)
     model = Column(String, nullable=True)
     category = Column(String, nullable=True)
@@ -35,11 +35,11 @@ class Product(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Relationships
+    
     price_history = relationship("PriceHistory", back_populates="product", cascade="all, delete-orphan")
     price_events = relationship("PriceEvent", back_populates="product", cascade="all, delete-orphan")
 
-    # Same product can exist on multiple sources — unique per source+external_id
+    
     __table_args__ = (
         UniqueConstraint("source", "external_id", name="uq_source_external_id"),
     )
@@ -55,12 +55,12 @@ class PriceHistory(Base):
     product_id = Column(String, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
     price = Column(Float, nullable=False)
     currency = Column(String, default="USD")
-    price_delta = Column(Float, nullable=True)     # difference from previous price
+    price_delta = Column(Float, nullable=True)     
     recorded_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     product = relationship("Product", back_populates="price_history")
 
-    # Critical for scale — millions of rows need this index to stay fast
+    
     __table_args__ = (
         Index("ix_price_history_product_recorded", "product_id", "recorded_at"),
     )
@@ -95,7 +95,7 @@ class PriceEvent(Base):
     source = Column(String, nullable=False)
     is_delivered = Column(Boolean, default=False)
     delivery_attempts = Column(Integer, default=0)
-    is_dead_letter = Column(Boolean, default=False)   # gave up after max retries
+    is_dead_letter = Column(Boolean, default=False)  
     created_at = Column(DateTime, default=datetime.utcnow)
     delivered_at = Column(DateTime, nullable=True)
 

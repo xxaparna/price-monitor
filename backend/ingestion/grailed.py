@@ -18,7 +18,7 @@ class GrailedCollector(BaseCollector):
             "category": metadata.get("style") or "Apparel",
             "current_price": float(raw["price"]) if raw.get("price") is not None else None,
             "currency": "USD",
-            "condition": None,                          # Grailed doesn't provide condition
+            "condition": None,                          
             "product_url": raw.get("product_url"),
             "image_url": image_url,
             "is_sold": bool(metadata.get("is_sold", False)),

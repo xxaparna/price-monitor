@@ -7,7 +7,6 @@ from backend.database import init_db
 
 @pytest_asyncio.fixture(autouse=True)
 async def setup_db():
-    """Initialize DB before each test."""
     await init_db()
 
 
