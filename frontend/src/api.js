@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API_KEY = 'admin-key-123'
-const BASE_URL = 'http://127.0.0.1:8000'
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
 
 const client = axios.create({
   baseURL: BASE_URL,
