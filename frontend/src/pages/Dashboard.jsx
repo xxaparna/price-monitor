@@ -30,7 +30,8 @@ export default function Dashboard() {
     }
   }
 
-  if (loading) return <div className="loading">Loading dashboard...</div>
+if (loading) return <div className="loading">Loading dashboard...</div>
+if (!analytics) return <div className="error">Failed to load analytics. Check API connection.</div>
 
   return (
     <div className="page">
