@@ -1,5 +1,8 @@
 # Price Monitor
 
+**Live Demo:** https://price-monitor-2qso.vercel.app
+**API Docs:** https://price-monitor-nu.vercel.app/docs
+git 
 A product price monitoring system that tracks pricing across **Grailed**, **Fashionphile**, and **1stdibs**. Detects price changes in real time, stores history, exposes a REST API, and notifies consumers via webhooks.
 
 **Stack:** FastAPI · SQLAlchemy (async) · SQLite · React + Vite · pytest
